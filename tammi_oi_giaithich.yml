@@ -1,0 +1,111 @@
+# Những thứ cần quan tâm
+
+### Chạy này python openwakeword/train.py --training_config openwakeword/tammi_oi_data.yml --augment_clips
+### Chạy này python openwakeword/train.py --training_config openwakeword/tammi_oi_data.yml --embedding_clips
+
+# Đổi tên model để tạo dữ liệu - anh tạo dữ liệu ngày gì hoặc thêm đặc điểm gì thì để
+model_name: "tammi_oi_20251023"
+
+# Những dữ liệu cần tải về và để theo kiến trúc folder như vậy nha:
+#https://www.kaggle.com/code/linhhonghihihi/openwakeword-data
+false_positive_validation_data_path: "./data/validation_set_features.npy"
+feature_data_files:
+  "ACAV100M_sample": "./data/openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
+#https://www.kaggle.com/code/linhhonghihihi/mit-rirs
+rir_paths:
+  - "./data/mit_rirs"
+#https://www.kaggle.com/code/linhhonghihihi/music-noise-and-noise
+#https://www.kaggle.com/code/linhhonghihihi/speech-data
+noise_paths_train:
+  music:
+    - "./data/train/noise_train/music"
+  speech:
+    - "./data/train/noise_train/speech"
+  noise:
+    - "./data/train/noise_train/noise"
+noise_paths_test:
+  music:
+    - "./data/test/noise_test/music_test"
+  speech:
+    - "./data/test/noise_test/speech_test"
+  noise:
+    - "./data/test/noise_test/noise_test"
+
+# Những dữ liệu positive và negative cần tải về và để theo kiến trúc folder như vậy nha:
+positive_train_output_dir: "./data/train/positive_train/"
+positive_test_output_dir: "./data/test/positive_test/"
+negative_train_output_dir: "./data/train/negative_train/"
+negative_test_output_dir: "./data/test/negative_test/"
+
+# embedding thì tạo path này
+box_positive_train_output_dir: "./data/train/box_positive_train/"
+box_positive_test_output_dir: "./data/test/box_positive_test/"
+box_negative_train_output_dir: "./data/train/box_negative_train/"
+box_negative_test_output_dir: "./data/test/box_negative_test/"
+
+# Những path anh muốn thay thì thay, còn ko thì tạo nếu muốn save wav sau augment vào nha:
+# Save augmented wav data
+save_debug_path_positive_test: "./data/test_verify_checkpoints/test_3_cac_tap_positive_test_sau_khi_augment/20251020_test/"
+save_debug_path_negative_test: "./data/test_verify_checkpoints/test_5_cac_tap_negative_test_sau_khi_augment/20251020_test/"
+save_debug_path_positive_train: "./data/test_verify_checkpoints/test_3_cac_tap_positive_test_sau_khi_augment/20251020_train/"
+save_debug_path_negative_train: "./data/test_verify_checkpoints/test_5_cac_tap_negative_test_sau_khi_augment/20251020_train/"
+# Này là save raw test í để save nhìu lần cùng 1 path cũng được
+save_raw_positive_test: "./data/test_verify_checkpoints/test_2_cac_tap_positive_test/20251017/"
+save_raw_negative_test: "./data/test_verify_checkpoints/test_4_cac_tap_negative_test/20251017/"
+
+
+# Những path này tự tạo
+output_dir: "./model"
+checkpoint_save_path: "./model/checkpoints_cnn"
+checkpoint_path: "./checkpoints"
+
+### Những thứ không cần quan tâm
+target_phrase:
+  - tam_mi_oy
+  - tam_mi_er
+batch_n_per_class:
+  "ACAV100M_sample": 8192
+  "adversarial_negative": 400
+  "positive": 400
+custom_negative_phrases: []
+max_negative_weight: 2500
+target_false_positives_per_hour: 0.5
+target_accuracy: 0.8
+target_recall: 0.7
+augmentation_batch_size: 8
+augmentation_rounds: 2
+test_augmentation_rounds: 1
+model_type: "cnn"
+layer_size: 128
+piper_sample_generator_path: "./piper-sample-generator"
+tts_batch_size: 50
+steps: 200000
+test_negative_source: "./data/negative_test/"
+train_negative_source: "./data/negative_test/"
+positive_source: "./data/positive/"
+
+augmentation_probabilities:
+  "Speed": 0.7
+  "SevenBandParametricEQ": 0.25
+  "TanhDistortion": 0.25
+  "PitchShift": 0.25
+  "BandStopFilter": 0.25
+  "AddColoredNoise": 0.25
+  "AddBackgroundNoise": 1
+  "Gain": 1.0
+  "RIR": 0.5
+
+noise_type_probabilities:
+  music: 0.2
+  speech: 0.6
+  noise: 0.2
+
+noise_paths_duplicate_rate:
+  music: 1
+  speech: 1
+  noise: 1
+
+learning_rate: 0.0001
+resume_checkpoint: ./model/tammi_oi_20251016_17_20_23/step_194736_recall_0.0000.pt
+resume_all_checkpoint: ./model/tammi_oi_20251016_17_20_23/
+
